@@ -1,0 +1,47 @@
+﻿<Window x:Class="MusicPluginWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicPluginWindow"
+        mc:Ignorable="d"
+        Title="Player" Height="450" Width="800">
+	<Grid>
+		<Grid Margin="0,0,300,0">
+			<DataGrid x:Name="WindowPlayList" Margin="10,10,10,40" IsReadOnly="True" AutoGenerateColumns="False">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Id" Width="1*" Binding="{Binding Path=PlayId}"/>
+					<DataGridTextColumn Header="Title" Width="4*" Binding="{Binding Path=Title}"/>
+					<DataGridTextColumn Header="Author" Width="4*" Binding="{Binding Path=Author}"/>
+					<DataGridTextColumn Header="User" Width="3*" Binding="{Binding Path=User}"/>
+				</DataGrid.Columns>
+			</DataGrid>
+			<Button Content="Remove" Margin="10,0,250,10" VerticalAlignment="Bottom" Height="25" Click="RemoveSelectMusic" HorizontalAlignment="Center" Width="200"/>
+			<Button Content="Clear" Margin="250,0,10,10" VerticalAlignment="Bottom" Height="25" Click="ClearMusic" HorizontalAlignment="Center" Width="200"/>
+		</Grid>
+		<Grid Width="300" HorizontalAlignment="Right">
+			<Label x:Name="WindowCurrentTime" Content="{Binding Path=CurrentTimeString, FallbackValue='00:00'}" HorizontalAlignment="Center" Margin="0,10,120,0" VerticalAlignment="Top" FontSize="24"/>
+			<Label Content="→" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="24"/>
+			<Label x:Name="WindowTotalTime" Content="{Binding Path=TotalTimeString, FallbackValue='00:00'}" HorizontalAlignment="Center" Margin="120,10,0,0" VerticalAlignment="Top" FontSize="24"/>
+			<Slider x:Name="WindowPlaySlider" HorizontalAlignment="Center" Margin="0,55,0,0" VerticalAlignment="Top" Width="280" IsEnabled="False"
+					LargeChange="3" IsMoveToPointEnabled="True"
+					Minimum="0" Maximum="{Binding Path=TotalTimeSeconds, FallbackValue='1'}"
+					Value="{Binding Path=CurrentTimeSeconds, Mode=TwoWay, FallbackValue='0'}"
+					PreviewMouseLeftButtonDown="PlayTimeChanging" PreviewMouseLeftButtonUp="PlayTimeChanged"/>
+			<Button x:Name="WindowPlayButton" Content="Play" HorizontalAlignment="Center" Margin="0,90,150,0" VerticalAlignment="Top" Width="60" Height="30" FontSize="16" Click="ResumePlayer"/>
+			<Button x:Name="WindowPauseButton" Content="Pause" HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" Width="60" Height="30" FontSize="16" IsEnabled="False" Click="PausePlayer"/>
+			<Button x:Name="WindowSkipButton" Content="Skip" HorizontalAlignment="Center" Margin="150,90,0,0" VerticalAlignment="Top" Width="60" Height="30" FontSize="16" Click="SkipPlayer"/>
+			<Label Content="Volume:" HorizontalAlignment="Center" Margin="0,130,200,0" VerticalAlignment="Top" FontSize="15"/>
+			<Label x:Name="WindowVolumeText" Content="{Binding Path=Volume, FallbackValue='100'}" HorizontalAlignment="Center" Margin="0,130,100,0" VerticalAlignment="Top" FontSize="15"/>
+			<Slider x:Name="WindowVolumeSlider" HorizontalAlignment="Center" Margin="115,135,0,0" VerticalAlignment="Top" Width="150" Maximum="100" SmallChange="1" LargeChange="10" Value="{Binding Path=Volume, FallbackValue='100'}"/>
+			<Label VerticalAlignment="Top" Content="Music Api:" Margin="10,200,10,0" FontSize="15" />
+			<Label x:Name="WindowMusicApiLabel" VerticalAlignment="Top" Content="{Binding Path=ApiType, FallbackValue='Null'}" Margin="50,200,10,0" FontSize="15" HorizontalAlignment="Right" />
+			<Label VerticalAlignment="Bottom" Content="Audio Device:" Margin="0,0,170,40" HorizontalAlignment="Center" FontSize="15" />
+			<ComboBox x:Name="WindowOutputDeviceList" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="280" Height="30" FontSize="16" IsReadOnly="True" ContextMenuOpening="UpdateDeviceList" SelectionChanged="DeviceSelect"/>
+			<TextBox x:Name="WindowSearchInputBox" Height="30" Margin="10,170,90,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" KeyDown="InsertMusicKeyboard"/>
+			<Button Content="Search" HorizontalAlignment="Right" Margin="0,170,10,0" VerticalAlignment="Top" Width="70" Height="30" FontSize="16" Click="InsertMusic"/>
+			<CheckBox x:Name="WindowOutputPlayInfoCheckBox" Content="Output player info" HorizontalAlignment="Left" Margin="10,0,0,163" VerticalAlignment="Bottom" FontSize="15" IsChecked="{Binding Path=OutputPlayerInfo, FallbackValue='false'}"/>
+			<TextBox x:Name="WindowOutputPlayInfoTextBox" Margin="10,0,10,70" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Text="{Binding Path=PlayerOutputFormatString, FallbackValue=''}" VerticalAlignment="Bottom" FontSize="14" Height="85"/>
+		</Grid>
+	</Grid>
+</Window>
